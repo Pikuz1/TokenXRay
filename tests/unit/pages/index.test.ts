@@ -128,4 +128,41 @@ describe('index page', () => {
     expect(wrapper.get('.page__status').text()).toBe('Reading the contract…')
     expect(wrapper.get('.form__submit').attributes('disabled')).toBeDefined()
   })
+
+  it('offers a print report only once the analysis is complete, and tracks it', async () => {
+    const print = vi.fn()
+    vi.stubGlobal('print', print)
+    const sink = createMemorySink()
+    setAnalyticsSink(sink)
+
+    const wrapper = await mountPage()
+    expect(wrapper.find('.page__print').exists()).toBe(false)
+
+    await wrapper.get('input').setValue(TOKEN)
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    await wrapper.get('.page__print').trigger('click')
+
+    expect(print).toHaveBeenCalledOnce()
+    expect(sink.events.at(-1)).toEqual({
+      event: 'report_printed',
+      props: { source: 'live' },
+    })
+    vi.unstubAllGlobals()
+  })
+
+  it('keeps the print button hidden while holders are still loading', async () => {
+    fakeDeps.current = liveDeps({ getHolders: vi.fn(() => new Promise(() => {})) })
+    const wrapper = await mountPage()
+    await wrapper.get('input').setValue(TOKEN)
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    expect(wrapper.find('.page__print').exists()).toBe(false)
+  })
+
+  it('marks interactive parts so they are left out of the printed report', async () => {
+    const wrapper = await mountPage()
+    expect(wrapper.get('form').classes()).toContain('no-print')
+    expect(wrapper.get('.page__intro').classes()).toContain('no-print')
+  })
 })

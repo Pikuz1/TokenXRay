@@ -45,4 +45,14 @@ function toggle() {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+@media print {
+  .explain__toggle {
+    display: none;
+  }
+
+  .explain__text {
+    display: block !important;
+  }
+}
 </style>

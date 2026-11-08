@@ -43,3 +43,34 @@ body {
     sans-serif;
   line-height: 1.5;
 }
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  :root {
+    color-scheme: light;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --text: #000000;
+    --muted: #444444;
+    --border: #bbbbbb;
+    --accent: #1b3aa8;
+    --ok: #17794a;
+    --warn: #8a4e05;
+    --info: #444444;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: inline;
+  }
+
+  article {
+    break-inside: avoid;
+  }
+}

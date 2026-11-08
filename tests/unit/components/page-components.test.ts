@@ -87,6 +87,7 @@ describe('TokenHeader', () => {
     expect(wrapper.text()).toContain('0xA0b8…eB48')
     expect(wrapper.text()).toContain('data read 2026-11-08')
     expect(wrapper.find('code').attributes('title')).toBe(base.address)
+    expect(wrapper.get('.print-only').text()).toBe(base.address)
     expect(wrapper.text()).not.toContain('Sample data')
   })
 
