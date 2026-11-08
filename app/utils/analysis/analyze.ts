@@ -123,3 +123,15 @@ export function completeAnalysis(
   const results = [...core.results, concentration]
   return { ...core, results, confidence: summariseConfidence(results) }
 }
+
+/** Inverse of `completeAnalysis`: separates the slow concentration result from the rest. */
+export function splitAnalysis(analysis: TokenAnalysis): {
+  core: CoreAnalysis
+  concentration: ConcentrationResult
+} {
+  const { confidence: _confidence, results, ...rest } = analysis
+  return {
+    core: { ...rest, results: results.slice(0, -1) },
+    concentration: results.at(-1) as ConcentrationResult,
+  }
+}

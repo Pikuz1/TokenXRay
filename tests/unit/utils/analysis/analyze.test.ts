@@ -6,6 +6,7 @@ import {
   analyzeConcentration,
   analyzeCore,
   completeAnalysis,
+  splitAnalysis,
 } from '~/utils/analysis/analyze'
 import type { AnalysisDeps } from '~/utils/analysis/analyze'
 import { mergeAbis } from '~/utils/analysis/merge-abi'
@@ -239,5 +240,18 @@ describe('completeAnalysis', () => {
     expect(analysis.results.at(-1)).toBe(concentration)
     expect(analysis.confidence).toEqual({ completed: 7, total: 7 })
     expect(core.results).toHaveLength(6)
+  })
+})
+
+describe('splitAnalysis', () => {
+  it('is the inverse of completeAnalysis', async () => {
+    const setup = deps()
+    const core = await analyzeCore(TOKEN, setup)
+    const concentration = await analyzeConcentration(TOKEN, core.token.totalSupply, setup)
+
+    expect(splitAnalysis(completeAnalysis(core, concentration))).toEqual({
+      core,
+      concentration,
+    })
   })
 })
