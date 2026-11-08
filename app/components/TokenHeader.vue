@@ -23,7 +23,8 @@ const readOn = computed(() => props.fetchedAt.slice(0, 10))
       <span v-if="source === 'sample'" class="token__badge">Sample data</span>
     </h2>
     <p class="token__meta">
-      <code :title="address">{{ shortAddress }}</code>
+      <code class="no-print" :title="address">{{ shortAddress }}</code>
+      <code class="print-only">{{ address }}</code>
       · Ethereum · data read {{ readOn }}
     </p>
     <p v-if="source === 'sample'" class="token__note">

@@ -7,12 +7,18 @@ import TokenHeader from '~/components/TokenHeader.vue'
 import { useTokenAnalysis } from '~/composables/useTokenAnalysis'
 import { useTracker } from '~/composables/useTracker'
 import { CHECK_COPY } from '~/content/check-copy'
+import type { AnalysisSource } from '~/types/analysis'
 import { SAMPLE_OPTIONS } from '~/utils/analysis/samples'
 import type { SampleOption } from '~/utils/analysis/samples'
 
 const { track } = useTracker()
 const { status, error, core, results, analysis, pendingConcentration, analyze } =
   useTokenAnalysis()
+
+function printReport(source: AnalysisSource) {
+  track('report_printed', { source })
+  window.print()
+}
 
 function pickSample(option: SampleOption) {
   track('sample_token_clicked', { symbol: option.label })
@@ -22,7 +28,7 @@ function pickSample(option: SampleOption) {
 
 <template>
   <main class="page">
-    <header class="page__intro">
+    <header class="page__intro no-print">
       <h1>Token X-Ray</h1>
       <p class="page__lead">
         Paste a token address to see what its issuer can do with it: pause transfers,
@@ -35,6 +41,7 @@ function pickSample(option: SampleOption) {
     </header>
 
     <AddressForm
+      class="no-print"
       :samples="SAMPLE_OPTIONS"
       :busy="status === 'loading'"
       :error="error"
@@ -42,7 +49,7 @@ function pickSample(option: SampleOption) {
       @pick="pickSample"
     />
 
-    <p v-if="status === 'loading'" class="page__status" role="status">
+    <p v-if="status === 'loading'" class="page__status no-print" role="status">
       Reading the contract…
     </p>
 
@@ -62,6 +69,14 @@ function pickSample(option: SampleOption) {
         />
       </div>
       <ConfidenceNote v-if="analysis" :confidence="analysis.confidence" />
+      <button
+        v-if="analysis"
+        class="page__print no-print"
+        type="button"
+        @click="printReport(analysis.source)"
+      >
+        Print or save as PDF
+      </button>
     </section>
 
     <footer class="page__footer">
@@ -106,6 +121,17 @@ function pickSample(option: SampleOption) {
 .page__cards {
   display: grid;
   gap: 0.75rem;
+}
+
+.page__print {
+  justify-self: start;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.375rem;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
 }
 
 .page__footer {
