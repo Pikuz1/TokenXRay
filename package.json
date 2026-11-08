@@ -23,7 +23,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "nuxt": "^4.4.8",
+    "nuxt": "^4.6.4",
     "viem": "^2.57.16",
     "vue": "^3.5.45"
   },
