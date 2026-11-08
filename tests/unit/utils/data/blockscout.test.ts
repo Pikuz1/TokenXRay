@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import {
   BLOCKSCOUT_ETHEREUM_URL,
+  HOLDERS_TIMEOUT_MS,
   createBlockscoutClient,
   parseContract,
   parseHolders,
@@ -120,6 +121,29 @@ describe('createBlockscoutClient', () => {
     expect(await client.getContract(TOKEN)).toBeNull()
     expect(await client.getToken(TOKEN)).toBeNull()
     expect(await client.getHolders(TOKEN)).toEqual([])
+  })
+
+  it('gives the holder list its own, longer timeout', async () => {
+    const spy = vi.spyOn(AbortSignal, 'timeout')
+    const client = createBlockscoutClient('https://b.test', {
+      fetcher: reply({ items: [] }),
+      timeoutMs: 1000,
+      holdersTimeoutMs: 5000,
+    })
+    await client.getToken(TOKEN)
+    await client.getHolders(TOKEN)
+    expect(spy.mock.calls.map(([ms]) => ms)).toEqual([1000, 5000])
+    spy.mockRestore()
+  })
+
+  it('allows 30 seconds for holders by default', async () => {
+    const spy = vi.spyOn(AbortSignal, 'timeout')
+    await createBlockscoutClient('https://b.test', { fetcher: reply({}) }).getHolders(
+      TOKEN,
+    )
+    expect(spy).toHaveBeenCalledWith(HOLDERS_TIMEOUT_MS)
+    expect(HOLDERS_TIMEOUT_MS).toBe(30_000)
+    spy.mockRestore()
   })
 
   it('rethrows other failures', async () => {

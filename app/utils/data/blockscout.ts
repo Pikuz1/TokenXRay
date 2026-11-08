@@ -12,6 +12,13 @@ import { isRecord, readAddress, readBigInt, readInteger, readString } from './pa
 
 export const BLOCKSCOUT_ETHEREUM_URL = 'https://eth.blockscout.com'
 
+/** Holder lists for large tokens routinely take 10 to 20 seconds to come back. */
+export const HOLDERS_TIMEOUT_MS = 30_000
+
+export interface BlockscoutOptions extends FetchOptions {
+  holdersTimeoutMs?: number
+}
+
 export interface BlockscoutClient {
   getContract(address: Address): Promise<ContractInfo | null>
   getToken(address: Address): Promise<TokenInfo | null>
@@ -67,12 +74,15 @@ export function parseHolders(payload: unknown): Holder[] {
 
 export function createBlockscoutClient(
   baseUrl: string = BLOCKSCOUT_ETHEREUM_URL,
-  options: FetchOptions = {},
+  { holdersTimeoutMs = HOLDERS_TIMEOUT_MS, ...options }: BlockscoutOptions = {},
 ): BlockscoutClient {
   /** Resolves to null when the explorer does not know the address. */
-  async function request(path: string): Promise<unknown | null> {
+  async function request(
+    path: string,
+    extra: FetchOptions = {},
+  ): Promise<unknown | null> {
     try {
-      return await fetchJson(`${baseUrl}/api/v2${path}`, options)
+      return await fetchJson(`${baseUrl}/api/v2${path}`, { ...options, ...extra })
     } catch (error) {
       if (error instanceof DataError && error.status === 404) return null
       throw error
@@ -89,7 +99,9 @@ export function createBlockscoutClient(
       return payload === null ? null : parseToken(payload)
     },
     async getHolders(address) {
-      return parseHolders(await request(`/tokens/${address}/holders`))
+      return parseHolders(
+        await request(`/tokens/${address}/holders`, { timeoutMs: holdersTimeoutMs }),
+      )
     },
   }
 }

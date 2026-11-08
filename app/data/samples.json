@@ -1,0 +1,188 @@
+[
+  {
+    "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "token": {
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 6,
+      "totalSupply": "46167764228373641",
+      "holdersCount": 9576948
+    },
+    "results": [
+      {
+        "id": "verified",
+        "status": "yes",
+        "evidence": []
+      },
+      {
+        "id": "upgradeable",
+        "status": "yes",
+        "evidence": ["Explorer reports a proxy contract"]
+      },
+      {
+        "id": "pause",
+        "status": "yes",
+        "evidence": ["pause", "paused", "unpause"]
+      },
+      {
+        "id": "freeze",
+        "status": "yes",
+        "evidence": ["blacklist", "isBlacklisted", "unBlacklist"]
+      },
+      {
+        "id": "mint",
+        "status": "yes",
+        "evidence": [
+          "configureMinter",
+          "isMinter",
+          "masterMinter",
+          "mint",
+          "minterAllowance",
+          "removeMinter",
+          "updateMasterMinter"
+        ]
+      },
+      {
+        "id": "admin",
+        "status": "yes",
+        "evidence": ["owner() is a regular wallet"],
+        "control": "single-wallet",
+        "address": "0xFcb19e6a322b27c06842A71e8c725399f049AE3a"
+      },
+      {
+        "id": "concentration",
+        "status": "yes",
+        "evidence": ["Based on the 10 largest listed wallets"],
+        "level": "low",
+        "top1": 6.42,
+        "top10": 23.92
+      }
+    ],
+    "source": "live",
+    "fetchedAt": "2026-11-08T14:02:44.475Z",
+    "confidence": {
+      "completed": 7,
+      "total": 7
+    }
+  },
+  {
+    "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "token": {
+      "name": "Tether",
+      "symbol": "USDT",
+      "decimals": 6,
+      "totalSupply": "84298550180940091",
+      "holdersCount": 17100500
+    },
+    "results": [
+      {
+        "id": "verified",
+        "status": "yes",
+        "evidence": []
+      },
+      {
+        "id": "upgradeable",
+        "status": "no",
+        "evidence": []
+      },
+      {
+        "id": "pause",
+        "status": "yes",
+        "evidence": ["pause", "paused", "unpause"]
+      },
+      {
+        "id": "freeze",
+        "status": "yes",
+        "evidence": [
+          "addBlackList",
+          "getBlackListStatus",
+          "isBlackListed",
+          "removeBlackList"
+        ]
+      },
+      {
+        "id": "mint",
+        "status": "no",
+        "evidence": []
+      },
+      {
+        "id": "admin",
+        "status": "yes",
+        "evidence": ["owner() is a contract"],
+        "control": "contract",
+        "address": "0xC6CDE7C39eB2f0F0095F41570af89eFC2C1Ea828"
+      },
+      {
+        "id": "concentration",
+        "status": "yes",
+        "evidence": ["Based on the 10 largest listed wallets"],
+        "level": "medium",
+        "top1": 16.6,
+        "top10": 45.53
+      }
+    ],
+    "source": "live",
+    "fetchedAt": "2026-11-08T14:02:57.113Z",
+    "confidence": {
+      "completed": 7,
+      "total": 7
+    }
+  },
+  {
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "token": {
+      "name": "Dai",
+      "symbol": "DAI",
+      "decimals": 18,
+      "totalSupply": "4492486571529399330245371823",
+      "holdersCount": 773211
+    },
+    "results": [
+      {
+        "id": "verified",
+        "status": "yes",
+        "evidence": []
+      },
+      {
+        "id": "upgradeable",
+        "status": "no",
+        "evidence": []
+      },
+      {
+        "id": "pause",
+        "status": "no",
+        "evidence": []
+      },
+      {
+        "id": "freeze",
+        "status": "no",
+        "evidence": []
+      },
+      {
+        "id": "mint",
+        "status": "yes",
+        "evidence": ["mint"]
+      },
+      {
+        "id": "admin",
+        "status": "no",
+        "evidence": [],
+        "control": "none"
+      },
+      {
+        "id": "concentration",
+        "status": "yes",
+        "evidence": ["Based on the 10 largest listed wallets"],
+        "level": "medium",
+        "top1": 18.11,
+        "top10": 37.46
+      }
+    ],
+    "source": "live",
+    "fetchedAt": "2026-11-08T14:03:21.505Z",
+    "confidence": {
+      "completed": 7,
+      "total": 7
+    }
+  }
+]

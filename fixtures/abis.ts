@@ -39,6 +39,14 @@ export const LOOKALIKE_TOKEN_ABI: ContractAbi = [
   fn('urbanRenewal'),
   fn('bankTransfer'),
   fn('compassBearing', 'view'),
-  fn('permitAndMint2'),
+  fn('mintedAt', 'view'),
   fn('minTransferAmount', 'view'),
+]
+
+/** Camel-case names where the keyword is split across words, as in USDT. */
+export const SPLIT_WORD_TOKEN_ABI: ContractAbi = [
+  ...erc20Core,
+  fn('addBlackList'),
+  fn('removeBlackList'),
+  fn('getBlackListStatus', 'view'),
 ]
