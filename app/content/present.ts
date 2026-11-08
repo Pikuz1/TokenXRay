@@ -54,8 +54,7 @@ function presentAdmin(result: AdminResult): Presentation {
         tone: 'attention',
         badge: 'One wallet',
         headline: 'Controlled by one wallet',
-        detail:
-          'A single key holds this power, which makes it a single point of failure.',
+        detail: 'One key holds this power, with no second approval step.',
       }
     case 'contract':
       return {
