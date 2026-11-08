@@ -79,3 +79,18 @@ export interface Confidence {
   completed: number
   total: number
 }
+
+export interface ContractInfo {
+  isVerified: boolean
+  isProxy: boolean
+  abi: ContractAbi | null
+  implementations: Address[]
+}
+
+export interface TokenInfo {
+  name: string | null
+  symbol: string | null
+  decimals: number | null
+  totalSupply: bigint | null
+  holdersCount: number | null
+}
