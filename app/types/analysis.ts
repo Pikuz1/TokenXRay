@@ -106,7 +106,10 @@ export interface TokenSummary {
 
 export type AnalysisSource = 'live' | 'sample'
 
-export type AnyCheckResult = CheckResult | AdminResult | ConcentrationResult
+export type PlainCheckId = Exclude<CheckId, 'admin' | 'concentration'>
+
+/** Discriminated on `id`, so each check's extra fields are available after narrowing. */
+export type AnyCheckResult = CheckResult<PlainCheckId> | AdminResult | ConcentrationResult
 
 /** Everything that can be read quickly; holder concentration arrives later. */
 export interface CoreAnalysis {
