@@ -94,3 +94,33 @@ export interface TokenInfo {
   totalSupply: bigint | null
   holdersCount: number | null
 }
+
+export interface TokenSummary {
+  name: string | null
+  symbol: string | null
+  decimals: number | null
+  /** Raw on-chain units, kept as a string so analyses stay JSON-serialisable. */
+  totalSupply: string | null
+  holdersCount: number | null
+}
+
+export type AnalysisSource = 'live' | 'sample'
+
+export type AnyCheckResult = CheckResult | AdminResult | ConcentrationResult
+
+/** Everything that can be read quickly; holder concentration arrives later. */
+export interface CoreAnalysis {
+  address: Address
+  token: TokenSummary
+  /** Results for every check except concentration, in `CHECK_IDS` order. */
+  results: AnyCheckResult[]
+  source: AnalysisSource
+  /** ISO timestamp of when the data was read. */
+  fetchedAt: string
+}
+
+export interface TokenAnalysis extends Omit<CoreAnalysis, 'results'> {
+  /** One result per check, in `CHECK_IDS` order. */
+  results: AnyCheckResult[]
+  confidence: Confidence
+}

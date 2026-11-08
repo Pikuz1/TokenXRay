@@ -22,11 +22,21 @@ function isNamedFunction(item: AbiItem): item is AbiItem & { name: string } {
   return item.type === 'function' && typeof item.name === 'string'
 }
 
+/** Words plus each pair of neighbours joined, so `addBlackList` also yields `blacklist`. */
+function candidateWords(identifier: string): string[] {
+  const words = splitWords(identifier)
+  const joined = words.slice(1).map((word, index) => `${words[index]}${word}`)
+  return [...words, ...joined]
+}
+
 /** Names of functions in the ABI that contain at least one of the given whole words. */
 export function matchFunctions(abi: ContractAbi, words: ReadonlySet<string>): string[] {
   const matches = new Set<string>()
   for (const item of abi) {
-    if (isNamedFunction(item) && splitWords(item.name).some((word) => words.has(word))) {
+    if (
+      isNamedFunction(item) &&
+      candidateWords(item.name).some((word) => words.has(word))
+    ) {
       matches.add(item.name)
     }
   }

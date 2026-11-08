@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { LOOKALIKE_TOKEN_ABI, PLAIN_TOKEN_ABI, POWERFUL_TOKEN_ABI } from '@fixtures/abis'
+import {
+  LOOKALIKE_TOKEN_ABI,
+  PLAIN_TOKEN_ABI,
+  POWERFUL_TOKEN_ABI,
+  SPLIT_WORD_TOKEN_ABI,
+} from '@fixtures/abis'
 import { combineSignals, matchFunctions, splitWords } from '~/utils/detectors/abi'
 import { detectFreeze } from '~/utils/detectors/freeze'
 import { detectMint } from '~/utils/detectors/mint'
@@ -27,6 +32,16 @@ describe('matchFunctions', () => {
       { type: 'function' },
     ]
     expect(matchFunctions(abi, new Set(['pause', 'paused']))).toEqual(['pause', 'paused'])
+  })
+})
+
+describe('freeze detector with split words', () => {
+  it('matches keywords split across camel-case words', () => {
+    expect(detectFreeze(SPLIT_WORD_TOKEN_ABI)).toEqual({
+      id: 'freeze',
+      status: 'yes',
+      evidence: ['addBlackList', 'getBlackListStatus', 'removeBlackList'],
+    })
   })
 })
 
